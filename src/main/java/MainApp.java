@@ -84,10 +84,13 @@ public class MainApp {
                         }
                     }
                     else if (actionChoice == 3) {
+                        
                         System.out.println("Message successfully stored.");
                         // Save configuration to array slot but handle sending metrics accordingly
                         messageStorage[indexTracker] = tempMsg;
                         indexTracker++;
+                        // Call our research method to write the data permanently onto the disk
+                        tempMsg.storeMessage();
                     }
                     break;
 

@@ -3,6 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 import java.util.Random;
+import java.io.FileWriter;
+import java.io.IOException;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 /**
  *
  * @author thabe
@@ -77,5 +81,21 @@ public class Message {
     public String getMessageHash() { return messageHash; }
     public String getRecipientNumber() { return recipientNumber; }
     public String getMessagePayload() { return messagePayload; }
+    
+    // Research Task: Create a custom method to save data into a JSON file
+    public void storeMessage() {
+        // Create a Gson tool that formats the text neatly
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+       
+        // Define the destination filename
+        String fileName = "messages_archive.json";
+       
+        try (FileWriter writer = new FileWriter(fileName, true)) {
+            // Convert the current message object variables into text lines
+            gson.toJson(this, writer);
+            System.out.println("JSON storage complete: Message appended to " + fileName);
+        } catch (IOException e) {
+            System.out.println("An error occurred while saving to JSON: " + e.getMessage());
+        }
 }
-
+}
