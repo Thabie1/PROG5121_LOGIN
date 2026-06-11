@@ -2,14 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
+import com.mycompany.prog5121_login.TaskManager;
 import java.util.Scanner;
 /**
  *
  * @author thabe
  */
 public class MainApp {
+   
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+       TaskManager manager = new TaskManager();
+       manager.populateTestData();
        
         System.out.println("Welcome to QuickChat!");
         System.out.print("Enter how many messages you wish to enter: ");
@@ -25,6 +29,7 @@ public class MainApp {
             System.out.println("\n--- QuickChat Main Menu ---");
             System.out.println("1) Send Messages");
             System.out.println("2) Show recently sent messages");
+            System.out.println("(4) Stored Messages & Reports"); 
             System.out.println("3) Quit");
             System.out.print("Choose an option: ");
            
@@ -98,16 +103,66 @@ public class MainApp {
                     System.out.println("Coming Soon.");
                     break;
 
+                    case 4:
+            System.out.println("\n--- SUBMENU: STORED MESSAGES ---");
+            System.out.println("a. Display all stored senders/recipients");
+            System.out.println("b. Display longest stored message");
+            System.out.println("c. Search by Message ID");
+            System.out.println("d. Search by Recipient Number");
+            System.out.println("e. Delete a message using Hash");
+            System.out.println("f. Display full details report");
+            System.out.print("Choose sub-option (a-f): ");
+           
+            char subChoice = scanner.next().toLowerCase().charAt(0);
+            scanner.nextLine(); // Clear trailing text buffer
+           
+            switch(subChoice) {
+                case 'a':
+                    System.out.println(manager.displayStoredMessages());
+                    break;
+                case 'b':
+                    System.out.println("Longest Message: " + manager.getLongestStoredMessage());
+                    break;
+                case 'c':
+                    System.out.print("Enter Message ID to find: ");
+                    String mid = scanner.nextLine();
+                    System.out.println(manager.searchByMessageId(mid));
+                    break;
+                case 'd':
+                    System.out.print("Enter Recipient Phone Number: ");
+                    String rPhone = scanner.nextLine();
+                    System.out.println(manager.searchByRecipient(rPhone));
+                    break;
+                case 'e':
+                    System.out.print("Enter Message Hash code to delete: ");
+                    String hKey = scanner.nextLine();
+                    if (manager.deleteMessageByHash(hKey)) {
+                        System.out.println("Message successfully deleted.");
+                    } else {
+                        System.out.println("Message hash code not found.");
+                    }
+                    break;
+                case 'f':
+                    System.out.println(manager.displayFullReport());
+                    break;
+                default:
+                    System.out.println("Invalid structural selection choice.");
+            }
+            break;
+
+                    
                 case 3:
                     running = false;
                     System.out.println("\nExiting application...");
                     System.out.println("Total count of successful messages handled: " + accumulatedSentMessages);
                     break;
 
+                    
                 default:
                     System.out.println("Invalid numeric selection. Try again.");
             }
         }
         scanner.close();
     }
+    
 }     
